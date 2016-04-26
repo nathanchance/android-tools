@@ -20,7 +20,7 @@ You have two options here, the lazy way or the non-lazy way.
 Lazy way (recommended!):
 -- Get curl installed so we can pull the required packages
 $ sudo apt-get install curl
--- Grab a script and execute it (thanks to @akhilnarang)
+-- Grab a script and execute it
 $ curl https://raw.githubusercontent.com/akhilnarang/scripts/master/build-environment-setup.sh | bash
 
 Non-lazy way:
@@ -32,7 +32,7 @@ $ sudo apt-get install openjdk-7-jre
 -- Install build tools
 $ sudo apt-get install git-core gnupg flex bison gperf build-essential zip curl zlib1g-dev gcc-multilib g++-multilib libc6-dev-i386 lib32ncurses5-dev x11proto-core-dev libx11-dev lib32z-dev ccache libgl1-mesa-dev libxml2-utils xsltproc unzip
 
-
+If you are on Ubuntu 16.04, see this guide for the setup part (steps 1-7): http://odste.blogspot.com/2016/04/guide-to-compiling-android-on-ubuntu.html
 
 #########################################
 ### Step Two: Configure Repo and Git  ###
@@ -116,6 +116,7 @@ If you have any questions, you can reach out to me via Hangouts (natechancellor@
 #########    Special thanks    ##########
 #########################################
 
-@Mazda-- for spearheading the Dirty Unicorns project, his dedication to open source, and helping me out at random points during compilation
-@BeansTown106 for the various advice and guidance he has provided plus his contributions to the open source community through the Pure Nexus Project
-@akhilnarang for his build environment scripts
+@Mazda-- for spearheading the Dirty Unicorns project, his dedication to open source, and helping me out at random points during compilation.
+@BeansTown106 for the various advice and guidance he has provided plus his contributions to the open source community through the Pure Nexus Project.
+@akhilnarang for his build environment scripts.
+@npjohnson for the Ubuntu 16.04 Java 7 instructions.
