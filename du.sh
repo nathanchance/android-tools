@@ -15,23 +15,23 @@
 
 # Necessary edits:
 # SOURCEDIR: The directory that holds your DU repos
-# HOLDDIR: The directory that will hold your completed DU zip files
+# DESTDIR: The directory that will hold your completed DU zip files
 # KBUILD_BUILD_HOST section: Remove this section if you don't want a custom user@host in the kernel version
 # DU_BUILD_TYPE section: Remove this section if you want to stick with DIRTY-DEEDS as the DU version.
-
-# Colors
-BLDRED="\033[1m""\033[31m"
-RST="\033[0m"
-
-# Variables
-SOURCEDIR=???
-OUTDIR=${SOURCEDIR}/out/target/product
-HOLDDIR=???
 
 # Parameters
 DEVICE=$1
 SYNC=$2
 CLEAN=$3
+
+# Variables
+SOURCEDIR=???
+OUTDIR=${SOURCEDIR}/out/target/product/${DEVICE}
+DESTDIR=???
+
+# Colors
+BLDRED="\033[1m""\033[31m"
+RST="\033[0m"
 
 # Make it show custom user@host in the kernel version
 export KBUILD_BUILD_USER=???
@@ -86,17 +86,17 @@ echo -e ""
 mka bacon
 echo -e ""
 
-# Remove exisiting files in HOLDDIR
-echo -e ${BLDRED}"REMOVING FILES IN ${HOLDDIR}"${RST}
+# Remove exisiting files in DESTDIR
+echo -e ${BLDRED}"REMOVING FILES IN ${DESTDIR}"${RST}
 echo -e ""
-rm ${HOLDDIR}/*_${DEVICE}_*.zip
-rm ${HOLDDIR}/*_${DEVICE}_*.zip.md5sum
+rm ${DESTDIR}/*_${DEVICE}_*.zip
+rm ${DESTDIR}/*_${DEVICE}_*.zip.md5sum
 
-# Copy new files to HOLDDIR
-echo -e ${BLDRED}"MOVING FILES FROM ${OUTDIR} TO ${HOLDDIR}"${RST}
+# Copy new files to DESTDIR
+echo -e ${BLDRED}"MOVING FILES FROM ${OUTDIR} TO ${DESTDIR}"${RST}
 echo -e ""
-mv ${OUTDIR}/${DEVICE}/DU_${DEVICE}_*.zip ${HOLDDIR}
-mv ${OUTDIR}/${DEVICE}/DU_${DEVICE}_*.zip.md5sum ${HOLDDIR}
+mv ${OUTDIR}/DU_${DEVICE}_*.zip ${DESTDIR}
+mv ${OUTDIR}/DU_${DEVICE}_*.zip.md5sum ${DESTDIR}
 
 # Go back home
 echo -e ${BLDRED}"GOING HOME"${RST}

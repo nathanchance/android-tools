@@ -15,22 +15,22 @@
 
 # Necessary edits:
 # SOURCEDIR: The directory that holds your PN repos
-# HOLDDIR: The directory that will hold your completed PN zip files
+# DESTDIR: The directory that will hold your completed PN zip files
 # KBUILD_BUILD_HOST section: Remove this section if you don't want a custom user@host in the kernel version
-
-# Colors
-BLDBLUE="\033[1m""\033[36m"
-RST="\033[0m"
-
-# Variables
-SOURCEDIR=???
-OUTDIR=${SOURCEDIR}/out/target/product
-HOLDDIR=???
 
 # Parameters
 DEVICE=$1
 SYNC=$2
 CLEAN=$3
+
+# Variables
+SOURCEDIR=???
+OUTDIR=${SOURCEDIR}/out/target/product/${DEVICE}
+DESTDIR=???
+
+# Colors
+BLDBLUE="\033[1m""\033[36m"
+RST="\033[0m"
 
 # Make it show custom user@host in the kernel version
 export KBUILD_BUILD_USER=???
@@ -82,17 +82,17 @@ echo -e ""
 mka bacon
 echo -e ""
 
-# Remove exisiting files in HOLDDIR
-echo -e ${BLDBLUE}"REMOVING FILES IN ${HOLDDIR}"${RST}
+# Remove exisiting files in DESTDIR
+echo -e ${BLDBLUE}"REMOVING FILES IN ${DESTDIR}"${RST}
 echo -e ""
-rm ${HOLDDIR}/*_${DEVICE}_*.zip
-rm ${HOLDDIR}/*_${DEVICE}_*.zip.md5sum
+rm ${DESTDIR}/*_${DEVICE}_*.zip
+rm ${DESTDIR}/*_${DEVICE}_*.zip.md5sum
 
-# Copy new files to HOLDDIR
-echo -e ${BLDBLUE}"MOVING FILES FROM ${OUTDIR} TO ${HOLDDIR}"${RST}
+# Copy new files to DESTDIR
+echo -e ${BLDBLUE}"MOVING FILES FROM ${OUTDIR} TO ${DESTDIR}"${RST}
 echo -e ""
-mv ${OUTDIR}/${DEVICE}/pure_nexus_${DEVICE}-*.zip ${HOLDDIR}
-mv ${OUTDIR}/${DEVICE}/pure_nexus_${DEVICE}-*.zip.md5sum ${HOLDDIR}
+mv ${OUTDIR}/pure_nexus_${DEVICE}-*.zip ${DESTDIR}
+mv ${OUTDIR}/pure_nexus_${DEVICE}-*.zip.md5sum ${DESTDIR}
 
 # Go back home
 echo -e ${BLDBLUE}"GOING HOME"${RST}
