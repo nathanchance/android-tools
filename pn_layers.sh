@@ -82,7 +82,7 @@ echo -e ""
 mka bacon
 echo -e ""
 
-# Remove exisiting files in DESTDIR
+# Remove existing files in DESTDIR
 echo -e ${BLDBLUE}"REMOVING FILES IN ${DESTDIR}"${RST}
 echo -e ""
 rm ${DESTDIR}/*_${DEVICE}_*.zip
@@ -106,6 +106,6 @@ END=$(date +%s)
 
 # Successfully completed compilation
 echo -e ${BLDBLUE}"====================================="${RST}
-echo -e ${BLDBLUE}"Compilation and upload successful!"${RST}
+echo -e ${BLDBLUE}"Compilation successful!"${RST}
 echo -e ${BLDBLUE}"Total time elapsed: $(echo $(($END-$START)) | awk '{print int($1/60)"mins "int($1%60)"secs"}')"${RST}
 echo -e ${BLDBLUE}"====================================="${RST}
