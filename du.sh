@@ -13,6 +13,12 @@
 # $ . du.sh angler sync clean
 # $ . du.sh hammerhead nosync noclean
 
+# HINT: You can add the folder this script is in to your PATH variable so you can run it from anywhere like so:
+# $ nano ~/.bashrc
+# Add  export PATH=$PATH:<path_to_folder>  to the end of that file, then hit ctrl+X, Y, then Enter
+# example: export PATH=$PATH:/home/<username>/scripts
+# Restart your terminal
+
 # Parameters:
 # Parameter 1: Device you want to build (angler, hammerhead, bullhead, etc.)
 # Parameter 2: Do you want to perform a repo sync before compilation?
