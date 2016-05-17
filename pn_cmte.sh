@@ -3,47 +3,48 @@
 # PURE NEXUS CMTE BUILD SCRIPT
 # Build Pure Nexus with one easy script. You will need to have the repo synced and configured already, use this page to help you with that: https://raw.githubusercontent.com/nathanchance/Android-Tools/master/Building_AOSP.txt
 
+# Necessary edits:
+# You will need to manually edit some variables/sections based on your preferences (read the comments throughout the script to understand what is doing on)
+
 # Usage:
 # $ . pn_cmte.sh <device> <sync|nosync> <clean|noclean>
-# Parameter 1: Device you want to build (angler, hammerhead, bullhead, etc.)
-# Parameter 2: Do you want to perform a repo sync or not?
-# Parameter 3: Do you want to make clobber or make installclean?
 
 # Examples:
-# . pn_cmte.sh angler sync clean
-# . pn_cmte.sh hammerhead nosync noclean
+# $ . pn_cmte.sh angler sync clean
+# $ . pn_cmte.sh hammerhead nosync noclean
 
-# Necessary edits:
-# SOURCEDIR: The directory that holds your PN repos
-# DESTDIR: The directory that will hold your completed PN zip files
-# KBUILD_BUILD_HOST section: Remove this section if you don't want a custom user@host in the kernel version
-
-# Parameters
+# Parameters:
+# Parameter 1: Device you want to build (angler, hammerhead, bullhead, etc.)
+# Parameter 2: Do you want to perform a repo sync before compilation?
+# Parameter 3: Do you want to make clobber or make installclean? (go with clean if you are unsure)
 DEVICE=$1
 SYNC=$2
 CLEAN=$3
 
-# Variables
+# Variables:
+# SOURCEDIR: The directory that holds your PN repos (for example, /home/<username>/android/PN-CMTE)
+# OURDIR: The directory that holds the completed PN zip directly after compilation (automatically <sourcedirectory>/out/target/product/<device>, don't change this)
+# DESTDIR: The directory that will hold your completed PN zip files for ease of access (for example, /home/<username>/completed_zips)
 SOURCEDIR=???
 OUTDIR=${SOURCEDIR}/out/target/product/${DEVICE}
 DESTDIR=???
 
-# Colors
+# Colors for terminal output
 BLDBLUE="\033[1m""\033[36m"
 RST="\033[0m"
 
-# Make it show custom user@host in the kernel version
+# KBUILD_BUILD_HOST section: Remove this section if you don't want a custom user@host in the kernel version
 export KBUILD_BUILD_USER=???
 export KBUILD_BUILD_HOST=???
 
-# Start tracking time
+# Start tracking the time to see how long it takes the script to run
 echo -e ""
 echo -e ${BLDBLUE}"SCRIPT STARTING AT $(date +%D\ %r)"${RST}
 echo -e ""
 START=$(date +%s)
 
-# Change to the source directory
-echo -e ${BLDBLUE}"MOVING TO ${SOURCEDIR}"${RST}
+# Move into the directory containing the source
+echo -e ${BLDBLUE}"MOVING INTO ${SOURCEDIR}"${RST}
 echo -e ""
 cd ${SOURCEDIR}
 
@@ -66,7 +67,7 @@ echo -e ${BLDBLUE}"PREPARING ${DEVICE}"${RST}
 echo -e ""
 breakfast ${DEVICE}
 
-# Clean up
+# Clean up the out folder
 echo -e ${BLDBLUE}"CLEANING UP ${SOURCEDIR}/out"${RST}
 echo -e ""
 if [ "${CLEAN}" == "clean" ]
@@ -76,25 +77,25 @@ else
    make installclean
 fi
 
-# Start building
+# Start building the zip file
 echo -e ${BLDBLUE}"MAKING ZIP FILE"${RST}
 echo -e ""
 mka bacon
 echo -e ""
 
-# Remove existing files in DESTDIR
-echo -e ${BLDBLUE}"REMOVING FILES IN ${DESTDIR}"${RST}
-echo -e ""
-rm ${DESTDIR}/*_${DEVICE}_*.zip
-rm ${DESTDIR}/*_${DEVICE}_*.zip.md5sum
+# Removing files section: Remove the # symbols for these next four lines if you want the script to remove the previous versions of the ROMs in your DESTDIR (for less clutter)
+# echo -e ${BLDBLUE}"REMOVING FILES IN ${DESTDIR}"${RST}
+# echo -e ""
+# rm ${DESTDIR}/*_${DEVICE}_*.zip
+# rm ${DESTDIR}/*_${DEVICE}_*.zip.md5sum
 
-# Copy new files to DESTDIR
+# Copy new files from the OUTDIR to DESTDIR (for easy of access)
 echo -e ${BLDBLUE}"MOVING FILES FROM ${OUTDIR} TO ${DESTDIR}"${RST}
 echo -e ""
 mv ${OUTDIR}/pure_nexus_${DEVICE}-*.zip ${DESTDIR}
 mv ${OUTDIR}/pure_nexus_${DEVICE}-*.zip.md5sum ${DESTDIR}
 
-# Go back home
+# Go back to the home folder
 echo -e ${BLDBLUE}"GOING HOME"${RST}
 echo -e ""
 cd ~/
@@ -104,7 +105,7 @@ echo -e ${BLDBLUE}"SCRIPT ENDING AT $(date +%D\ %r)"${RST}
 echo -e ""
 END=$(date +%s)
 
-# Successfully completed compilation
+# Successfully completed compilation and print out time it took to compile
 echo -e ${BLDBLUE}"====================================="${RST}
 echo -e ${BLDBLUE}"Compilation successful!"${RST}
 echo -e ${BLDBLUE}"Total time elapsed: $(echo $(($END-$START)) | awk '{print int($1/60)"mins "int($1%60)"secs"}')"${RST}
