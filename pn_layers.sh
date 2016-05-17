@@ -110,3 +110,4 @@ echo -e ${BLDBLUE}"====================================="${RST}
 echo -e ${BLDBLUE}"Compilation successful!"${RST}
 echo -e ${BLDBLUE}"Total time elapsed: $(echo $(($END-$START)) | awk '{print int($1/60)"mins "int($1%60)"secs"}')"${RST}
 echo -e ${BLDBLUE}"====================================="${RST}
+echo -e "\a"

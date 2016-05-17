@@ -113,3 +113,4 @@ echo -e ${BLDRED}"====================================="${RST}
 echo -e ${BLDRED}"Compilation successful!"${RST}
 echo -e ${BLDRED}"Total time elapsed: $(echo $(($END-$START)) | awk '{print int($1/60)"mins "int($1%60)"secs"}')"${RST}
 echo -e ${BLDRED}"====================================="${RST}
+echo -e "\a"
