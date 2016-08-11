@@ -5,18 +5,24 @@
 #############
 # These MUST be edited for the script to work
 
-# SOURCEDIR: Directory that holds your AK source
-# e.g. SOURCEDIR=${HOME}/Android/AK
+# SOURCEDIR: Directory that holds your Ninja source
+# e.g. SOURCEDIR=${HOME}/Android/Ninja
 SOURCEDIR=
 
 # ANYKERNELDIR: Directory that holds the AnyKernel repo
-# e.g. ANYKERNELDIR=${HOME}/Android/AK-AK2
+# e.g. ANYKERNELDIR=${HOME}/Android/Ninja-AK2
 ANYKERNELDIR=
 
 # TOOLCHAINDIR: Directory that holds the toolchain repo
 # e.g. TOOLCHAINDIR=${HOME}/Android/aarch64-linux-android-6.x-kernel-linaro
 TOOLCHAINDIR=
 
+# NINJABRANCH: The branch that you want to compile on
+# Choices:
+# m (for the M branch)
+# n (for the N branch)
+# e.g. NINJABRANCH=m
+NINJABRANCH=
 
 
 # Other variables
@@ -27,14 +33,12 @@ RESTORE="\033[0m"
 THREAD="-j$(grep -c ^processor /proc/cpuinfo)"
 KERNEL="Image.gz"
 DTBIMAGE="dtb"
-DEFCONFIG="ak_angler_defconfig"
+DEFCONFIG="ninja_defconfig"
 ZIMAGE_DIR="${SOURCEDIR}/arch/arm64/boot"
 KERNELVER=$( grep -r "EXTRAVERSION = -" ${SOURCEDIR}/Makefile | sed 's/EXTRAVERSION = -//' )
-AKBRANCH=ak-mm-staging
 
 
 # Configure build
-export LOCALVERSION=-${KERNERLVER}
 export CROSS_COMPILE="${TOOLCHAINDIR}/bin/aarch64-linux-android-"
 export ARCH=arm64
 export SUBARCH=arm64
@@ -47,17 +51,17 @@ clear
 # Show the version of the kernel compiling
 echo -e ${RED}
 echo -e ""
-echo -e "-----------------------------------------------------"
+echo -e "---------------------------------------------------------------------"
 echo -e ""
 echo -e ""
-echo -e "    ___    __ __    __ __ __________  _   __________ ";
-echo -e "   /   |  / //_/   / //_// ____/ __ \/ | / / ____/ / ";
-echo -e "  / /| | / ,<     / ,<  / __/ / /_/ /  |/ / __/ / /  ";
-echo -e " / ___ |/ /| |   / /| |/ /___/ _, _/ /|  / /___/ /___";
-echo -e "/_/  |_/_/ |_|  /_/ |_/_____/_/ |_/_/ |_/_____/_____/";
+echo -e "    _   _______   __    _____       __ __ __________  _   __________ ";
+echo -e "   / | / /  _/ | / /   / /   |     / //_// ____/ __ \/ | / / ____/ / ";
+echo -e "  /  |/ // //  |/ /_  / / /| |    / ,<  / __/ / /_/ /  |/ / __/ / /  ";
+echo -e " / /|  // // /|  / /_/ / ___ |   / /| |/ /___/ _, _/ /|  / /___/ /___";
+echo -e "/_/ |_/___/_/ |_/\____/_/  |_|  /_/ |_/_____/_/ |_/_/ |_/_____/_____/";
 echo -e ""
 echo -e ""
-echo -e "-----------------------------------------------------"
+echo -e "---------------------------------------------------------------------"
 echo -e ""
 echo -e ""
 echo -e ""
@@ -92,14 +96,14 @@ echo -e ""
 cd ${ANYKERNELDIR}
 rm -rf ${KERNEL} > /dev/null 2>&1
 rm -rf ${DTBIMAGE} > /dev/null 2>&1
-git checkout ak-angler-anykernel
-git reset --hard origin/ak-angler-anykernel
+git checkout ninja
+git reset --hard origin/ninja
 git clean -f -d -x > /dev/null 2>&1
 git pull > /dev/null 2>&1
 
 cd ${SOURCEDIR}
-git checkout ${AKBRANCH}
-git reset --hard origin/${AKBRANCH}
+git checkout ${NINJABRANCH}
+git reset --hard origin/${NINJABRANCH}
 git clean -f -d -x > /dev/null 2>&1
 git pull
 make clean
