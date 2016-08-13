@@ -18,10 +18,13 @@ If something has a $ in front of it, that is a command you need to run in your t
 You have two options here, the lazy way or the non-lazy way.
 
 Lazy way (recommended!):
--- Get curl installed so we can pull the required packages
-$ sudo apt-get install curl
--- Grab a script and execute it
-$ curl https://raw.githubusercontent.com/akhilnarang/scripts/master/build-environment-setup.sh | bash
+-- Grab a repo with some useful scripts, and run the needed one
+$ git clone https://github.com/akhilnarang/scripts
+$ cd scripts
+$ ls
+$ bash <script-name>
+
+Run the script corresponding to your Linux Distribution
 
 Non-lazy way:
 -- Grab Java 7:
