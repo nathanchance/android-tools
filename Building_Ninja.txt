@@ -1,0 +1,261 @@
+#####################################
+##                                 ##
+##  1. Configure your environment  ##
+##                                 ##
+#####################################
+
+In order to compile this kernel, I'd recommend using Linux (OS X should be acceptable but this guide will be tailored for Linux). If you can't dual boot, use Virtual Box to create a virtual machine (I did it with Mint 18, images below). To get the environment configured, either use Google's own guide (https://source.android.com/source/initializing.html) or my guide (https://raw.githubusercontent.com/nathanchance/Android-Tools/master/Building_AOSP.txt)
+
+
+
+##########################
+##                      ##
+##  2. Grab the source  ##
+##                      ##
+##########################
+
+1. Grab my Ninja source
+
+Format:
+$ mkdir ~/Android
+$ cd ~/Android
+$ git clone https://github.com/nathanchance/Ninja-Kernel.git Ninja[/code]
+
+Explanation:
+- First command makes a directory named Android in your home folder (mkdir = make directory). You can change the location if you want but keep it consistent throughout the guide.
+- Second command moves into that directory (change directory)
+- Third command pulls the source from my Github into a directory named Ninja (git clone <url> <folder_to_clone_in_to> is the format of the command).[/hide]
+
+
+2. Grab my AnyKernel source
+
+Format:
+$ cd ~/Android
+$ git clone https://github.com/nathanchance/Ninja-AnyKernel2 Ninja-AK2[/code]
+
+Explanation:
+- First command moves into the Android directory we made above (change directory)
+- Second command pulls the source from my Github into a directory named Ninja (git clone <url> <folder_to_clone_in_to> is the format of the command).[/hide]
+
+
+3. Grab the toolchain you want to use to compile the kernel
+
+Format:
+$ cd ~/Android
+$ git clone <toolchain_url>
+
+Explanation:
+- In order to compile the kernel, we need to grab a toolchain (bunch of compilation tools). I currently use DF-LINARO6.1 (last option in this list) but I have used all of these in the past. Below are the list of possible URLs to clone; copy and paste it after the words git clone above:
+   * AOSP: https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9
+   * Uber 4.9: https://bitbucket.org/DespairFactor/aarch64-linux-android-4.9-kernel.git
+   * Uber 5.4: https://bitbucket.org/DespairFactor/aarch64-linux-android-5.x-kernel.git
+   * Uber 6.1: https://bitbucket.org/DespairFactor/aarch64-linux-android-6.x-kernel.git
+   * Uber 7.0: https://bitbucket.org/DespairFactor/aarch64-linux-android-7.0-kernel.git
+   * Linaro 4.9: https://android-git.linaro.org/git/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9-linaro.git
+   * Linaro 5.4: https://android-git.linaro.org/git/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-5.4-linaro.git
+   * Linaro 6.1: https://android-git.linaro.org/git/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-6.1-linaro.git
+   * DF-Linaro 4.9: https://bitbucket.org/DespairFactor/aarch64-linux-android-4.9-kernel-linaro.git
+   * DF-Linaro 5.4: https://bitbucket.org/DespairFactor/aarch64-linux-android-5.x-kernel-linaro.git
+   * DF-Linaro 6.1: https://bitbucket.org/DespairFactor/aarch64-linux-android-6.x-kernel-linaro.git
+
+
+
+##########################
+##                      ##
+##  3. Setup the build  ##
+##                      ##
+##########################
+
+1. Make sure everything looks right
+
+- After following the above steps, type:
+$ ls
+- You should see something like this:
+aarch64-linux-android-6.x-kernel-linaro  Ninja  Ninja-AK2
+- The toolchain directory make be different depending on what you cloned above. If it looks different, delete the Android folder and do step 2 again.
+
+
+2. Select the correct kernel branch
+
+Format:
+$ cd ~/Android/Ninja
+$ git checkout <branch>
+
+Example:
+$ cd ~/Android/Ninja
+$ git checkout m
+
+Explanation:
+- First command will move you into the Ninja source directory we cloned above.
+- Second command will checkout the branch you want to compile for. A git repo can have multiple branches. For mine, these are the possible options:
+   * m (for the M branch)
+   * n (for the N branch)
+
+
+3. Select the correct AnyKernel branch (this should already be done)
+
+Format:
+$ cd ~/Android/Ninja-AK2
+$ git checkout ninja
+
+Explanation:
+- First command will move you into the Ninja AnyKernel directory we cloned above. This is what allows you to flash the kernel (thank you very much [MENTION=4544860]osm0sis[/MENTION] for all the work you do).
+- Second command will checkout the correct branch (in this case, ninja)
+
+
+
+##########################
+##                      ##
+##  4. Make the kernel  ##
+##                      ##
+##########################
+
+1. Tell the makefile what toolchain and architecture you are building for
+
+   1. Figure out the full path of your toolchain folder
+
+   Assuming you have done this whole process correctly, you can move into your toolchain directory and type:
+   $ cd ~/Android/<toolchain_folder>
+   $ pwd
+
+   Example:
+   $ cd ~/Android/aarch64-linux-android-6.x-kernel-linaro
+   $ pwd
+
+   You should get something like this: /home/nathanchance/Android/aarch64-linux-android-6.x-kernel-linaro
+
+
+   2. Tell the compiler where that toolchain is
+
+   Copy and paste that file location above into this command:
+   $ export CROSS_COMPILE=<toolchain_dir>/bin/aarch64-linux-android-
+
+   Example:
+   $ export CROSS_COMPILE=/home/nathanchance/Android/aarch64-linux-android-6.x-kernel-linaro/bin/aarch64-linux-android-[/code]
+
+
+   3. Set the architecture
+
+   Angler is a 64-bit device so we need arm64
+   $ export ARCH=arm64 && export SUBARCH=arm64
+
+
+2. Clean up from a previous compilation and update the source
+
+Format:
+$ cd ~/Android/Ninja-AK2
+$ git reset --hard origin/ninja
+$ git clean -f -d -x > /dev/null 2>&1
+$ git pull > /dev/null 2>&1
+
+$ cd ~/Android/Ninja
+$ git reset --hard origin/<kernel_branch>
+$ git clean -f -d -x > /dev/null 2>&1
+$ make clean && make mrproper
+
+Example:
+$ cd ~/Android/Ninja-AK2
+$ git reset --hard origin/ninja
+$ git clean -f -d -x > /dev/null 2>&1
+$ git pull > /dev/null 2>&1
+
+$ cd ~/Android/Ninja
+$ git reset --hard origin/m
+$ git clean -f -d -x > /dev/null 2>&1
+$ make clean && make mrproper
+
+Explanation (first set followed by second set):
+- The first command moves you into the Ninja AnyKernel directory.
+- The second command will undo any local commits you have done and align your source with the most recent commit from me.
+- The third command will clean any untracked or compiled files (this is send to /dev/null so you do not see it happen).
+- The fourth command will pull any new AnyKernel changes from me into the source.
+
+- The first command moves you into the Ninja source directory.
+- The second command will undo any local commits you have done and align your source with the most recent commit from me.
+- The third command will clean any untracked or compiled files (this is send to /dev/null so you do not see it happen).
+- The fourth and fifth command (strung together with &&) will remove you
+- The sixth command will pull any new kernel changes from me into the source.
+
+
+3. Set up the defconfig
+
+A defconfig tells the compiler which features you want in the kernel. This is already set up by me. To set up the defconfig, type the following:
+$ cd ~/Android/Ninja
+$ make ninja_defconfig
+
+
+4. Name the kernel (optional)
+
+If you notice in About Phone > Kernel Version, it shows 3.10.102-NINJA-v1.2 (or something similar). You can customize this by opening the Makefile in the source directory and editing the EXTRAVERSION variable (this will be undone next time you compile).
+
+
+5. Make the kernel!
+
+Format:
+$ make -j#
+
+Example:
+$ make -j4
+
+Explanation:
+- The # after the "j" is how many simultaneous threads are run. Traditionally, this is the number of cores you have plus one. So a quad-core CPU would be -j5.
+
+
+
+###############################
+##                           ##
+##  5. Zip it up and flash!  ##
+##                           ##
+###############################
+
+1. Copy the zImage to the AnyKernel directory
+
+Format:
+$ cd ~/Android/Ninja/arch/arm64/boot
+$ cp -v Image.gz ~/Android/Ninja-AK2/zImage
+
+Explanation:
+- We need to copy the newly compiled kernel (which resides in the arch/arm64/boot folder) to the AnyKernel directory, while changing its name to zImage.
+- cp = copy
+- -v = verbose (prints the copying)
+- Image.gz = file to be copied
+- ~/Android/Ninja-AK2/zImage = destination and name
+
+
+2. Make a current dtb file
+
+Format:
+$ cd ~/Android/Ninja-AK2
+$ tools/dtbToolCM -v2 -o dtb -s 2048 -p ~/Android/Ninja/scripts/dtc/ ~/Android/Ninja/arch/arm64/boot/dts/
+
+Explanation:
+- No explanation, just do it :P
+
+
+3. Zip it up!
+
+Format:
+$ cd ~/Android/Ninja-AK2
+$ zip -x@zipexclude -r9 ninja-kernel.zip *
+
+Explanation:
+- Using the above commands, your newly completed kernel will be located at ~/Android/Ninja-AK2/ninja-kernel.zip
+
+
+
+##################
+##              ##
+##  CONCLUSION  ##
+##              ##
+##################
+
+If you followed all of the above steps successfully, congratulations, you built the kernel!! Once you have done all five steps, you will just need to follow steps 4 and 5 to update in the future. Below, I have linked a script that will do all of this for you (with some variable edits at the top); however, please do it manually first so you know exactly what you are doing :) enjoy!
+
+https://raw.githubusercontent.com/nathanchance/Android-Tools/master/ninja.sh
+
+Below are screenshots of me doing this process in a virtual machine (Mint 18) with 2 cores, 4GB of RAM, and 15GB of storage on my MacBook with a 2.5 GHz Intel Core i5 and 8GB of RAM (fairly average in the world of PC specs I think). It's totally possible to do this on your own.
+
+http://i.imgur.com/XJXM2hA.png
+http://i.imgur.com/dBJdZZ8.png
+
+If you have any questions, feel free to mention me on XDA (@nathanchance) or contact me on Hangouts (natechancellor@gmail.com) or Telegram (@nathanchance).
