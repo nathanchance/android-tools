@@ -19,23 +19,23 @@ In order to compile this kernel, I'd recommend using Linux (OS X should be accep
 Format:
 $ mkdir ~/Android
 $ cd ~/Android
-$ git clone https://github.com/nathanchance/Ninja-Kernel.git Ninja[/code]
+$ git clone https://github.com/nathanchance/Ninja-Kernel.git Ninja
 
 Explanation:
 - First command makes a directory named Android in your home folder (mkdir = make directory). You can change the location if you want but keep it consistent throughout the guide.
 - Second command moves into that directory (change directory)
-- Third command pulls the source from my Github into a directory named Ninja (git clone <url> <folder_to_clone_in_to> is the format of the command).[/hide]
+- Third command pulls the source from my Github into a directory named Ninja (git clone <url> <folder_to_clone_in_to> is the format of the command).
 
 
 2. Grab my AnyKernel source
 
 Format:
 $ cd ~/Android
-$ git clone https://github.com/nathanchance/Ninja-AnyKernel2 Ninja-AK2[/code]
+$ git clone https://github.com/nathanchance/Ninja-AnyKernel2 Ninja-AK2
 
 Explanation:
 - First command moves into the Android directory we made above (change directory)
-- Second command pulls the source from my Github into a directory named Ninja (git clone <url> <folder_to_clone_in_to> is the format of the command).[/hide]
+- Second command pulls the source from my Github into a directory named Ninja (git clone <url> <folder_to_clone_in_to> is the format of the command).
 
 
 3. Grab the toolchain you want to use to compile the kernel
@@ -99,7 +99,7 @@ $ cd ~/Android/Ninja-AK2
 $ git checkout ninja
 
 Explanation:
-- First command will move you into the Ninja AnyKernel directory we cloned above. This is what allows you to flash the kernel (thank you very much [MENTION=4544860]osm0sis[/MENTION] for all the work you do).
+- First command will move you into the Ninja AnyKernel directory we cloned above. This is what allows you to flash the kernel (thank you very much @osm0sis for all the work you do).
 - Second command will checkout the correct branch (in this case, ninja)
 
 
@@ -131,7 +131,7 @@ Explanation:
    $ export CROSS_COMPILE=<toolchain_dir>/bin/aarch64-linux-android-
 
    Example:
-   $ export CROSS_COMPILE=/home/nathanchance/Android/aarch64-linux-android-6.x-kernel-linaro/bin/aarch64-linux-android-[/code]
+   $ export CROSS_COMPILE=/home/nathanchance/Android/aarch64-linux-android-6.x-kernel-linaro/bin/aarch64-linux-android-
 
 
    3. Set the architecture
