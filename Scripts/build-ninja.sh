@@ -149,7 +149,7 @@ cd ${HOME}
 
 
 # End the script
-newLine; echoText ${BUILD_RESULT_STRING}; newLine
+newLine; echoText "${BUILD_RESULT_STRING}"; newLine
 
 DATE_END=$(date +"%s")
 DIFF=$((${DATE_END} - ${DATE_START}))
