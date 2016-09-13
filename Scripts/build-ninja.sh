@@ -4,7 +4,6 @@
 ##################
 ##  HOW TO USE  ##
 ##################
-
 # Copy this script to a directory other than the source, edit the variables below, and run "source build-ninja.sh"
 
 
@@ -22,11 +21,18 @@ SOURCE_DIR=
 TOOLCHAIN_DIR=
 
 # NINJA_BRANCH: The branch that you want to compile on
-# Choices:
-# m (for the M branch)
-# n (for the N branch)
-# e.g. NINJA_BRANCH=m
-NINJA_BRANCH=
+NINJA_BRANCH=release
+
+# Check user input
+if [[ -z ${SOURCE_DIR} ]]; then
+   echo "You did not edit the SOURCE_DIR variable! Please edit that variable at the top of the script and run it again."
+   return
+fi
+
+if [[ -z ${TOOLCHAIN_DIR} ]]; then
+   echo "You did not edit the TOOLCHAIN_DIR variable above! Please edit that variable at the top of the script and run it again."
+   return
+fi
 
 
 #################
@@ -59,8 +65,7 @@ RED="\033[01;31m"
 BLINK_RED="\033[05;31m"
 RESTORE="\033[0m"
 THREAD="-j$(grep -c ^processor /proc/cpuinfo)"
-KERNEL="Image.gz"
-DTBIMAGE="dtb"
+KERNEL="Image.gz-dtb"
 DEFCONFIG="ninja_defconfig"
 ZIMAGE_DIR="${SOURCE_DIR}/arch/arm64/boot"
 ANYKERNEL_DIR=${SOURCE_DIR}/anykernel
@@ -102,7 +107,6 @@ echoText "CLEANING UP AND UPDATING"; newLine
 # Clean AnyKernel directory
 cd ${ANYKERNEL_DIR}
 rm -rf ${KERNEL} > /dev/null 2>&1
-rm -rf ${DTBIMAGE} > /dev/null 2>&1
 
 # Clean source directory
 cd ${SOURCE_DIR}
@@ -114,6 +118,7 @@ git pull
 # Clean make
 make clean
 make mrproper
+
 
 # Set kernel version
 KERNEL_VER=$( grep -r "EXTRAVERSION = -" ${SOURCE_DIR}/Makefile | sed 's/EXTRAVERSION = -//' )
@@ -134,10 +139,9 @@ if [[ `ls ${ZIMAGE_DIR}/${KERNEL} 2>/dev/null | wc -l` != "0" ]]; then
    # Make the zip file
    newLine; echoText "MAKING FLASHABLE ZIP"; newLine
 
-   ${ANYKERNEL_DIR}/tools/dtbToolCM -v2 -o ${ANYKERNEL_DIR}/${DTBIMAGE} -s 2048 -p scripts/dtc/ arch/arm64/boot/dts/
    cp -vr ${ZIMAGE_DIR}/${KERNEL} ${ANYKERNEL_DIR}/zImage
    cd ${ANYKERNEL_DIR}
-   zip -x@zipexclude -r9 ${KERNEL_VER}.zip *
+   zip -r9 ${KERNEL_VER}.zip * -x README ${KERNEL_VER}.zip
 
 else
    BUILD_RESULT_STRING="BUILD FAILED"
