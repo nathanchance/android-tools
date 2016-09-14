@@ -72,13 +72,13 @@ $ git checkout <branch>
 
 Example:
 $ cd ~/Android/Ninja
-$ git checkout m
+$ git checkout release
 
 Explanation:
 - First command will move you into the Ninja source directory we cloned above.
 - Second command will checkout the branch you want to compile for. A git repo can have multiple branches. For mine, these are the possible options:
-   * m (for the M branch)
-   * n (for the N branch)
+   * release (for the stable branch)
+   * staging (for the beta branch)
 
 
 
@@ -175,31 +175,20 @@ Explanation:
 
 Format:
 $ cd ~/Android/Ninja
-$ cp -v arch/arm64/boot/Image.gz anykernel/zImage
+$ cp -v arch/arm64/boot/Image.gz-dtb anykernel/zImage
 
 Explanation:
 - We need to copy the newly compiled kernel (which resides in the arch/arm64/boot folder) to the AnyKernel directory, while changing its name to zImage.
 - cp = copy
 - -v = verbose (prints the copying)
-- arch/arm64/boot/Image.gz = file to be copied
+- arch/arm64/boot/Image.gz-dtb = file to be copied
 - anykernel/zImage = destination and name
 
-
-2. Make a current dtb file
-
-Format:
-$ cd ~/Android/Ninja/anykernel
-$ tools/dtbToolCM -v2 -o dtb -s 2048 -p ../scripts/dtc/ ../arch/arm64/boot/dts/
-
-Explanation:
-- No explanation, just do it :P
-
-
-3. Zip it up!
+2. Zip it up!
 
 Format:
 $ cd ~/Android/Ninja/anykernel
-$ zip -x@zipexclude -r9 ninja-kernel.zip *
+$ zip -r9 ninja-kernel.zip * -x README ninja-kernel.zip
 
 Explanation:
 - Using the above commands, your newly completed kernel will be located at ~/Android/Ninja/anykernel/ninja-kernel.zip
