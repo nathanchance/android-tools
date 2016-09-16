@@ -1,10 +1,10 @@
 #!/bin/bash
 
 
-##################################
-#  PURE EXPERIENCE BUILD SCRIPT  #
-##################################
-# Build PureNexus with one easy script. You will need to have the repo synced and configured already, use this page to help you with that: https://raw.githubusercontent.com/nathanchance/Android-Tools/master/Guides/Building_AOSP.txt
+#######################
+#  PURE BUILD SCRIPT  #
+#######################
+# Build Pure with one easy script. You will need to have the repo synced and configured already, use this page to help you with that: https://raw.githubusercontent.com/nathanchance/Android-Tools/master/Guides/Building_AOSP.txt
 
 # HINT: You can add the folder this is in to your PATH variable so you can run it from anywhere like so:
 # $ nano ~/.bashrc
@@ -24,19 +24,18 @@
 ###########
 #  Usage  #
 ###########
-# $ . build-px.sh <device> <sync|nosync> <clean|noclean> <log|nolog>
+# $ . build-pure.sh <device> <sync|nosync> <clean|noclean> <log|nolog>
 # Parameter 1: Device you want to build (angler, hammerhead, bullhead, etc.)
 # Parameter 2: Do you want to perform a repo sync before compilation?
 # Parameter 3: Do you want to make clobber or make installclean? (go with clean if you are unsure)
 # Parameter 4: Do you want to log your compilation or not?
 
 
-
 ##############
 #  Examples  #
 ##############
-# $ . build-px.sh angler sync clean nolog
-# $ . build-px.sh hammerhead nosync noclean log
+# $ . build-pure.sh angler sync clean nolog
+# $ . build-pure.sh hammerhead nosync noclean log
 
 
 ###############
@@ -73,10 +72,10 @@ LOG=${4}
 ###############
 #  Variables  #
 ###############
-# SOURCE_DIR: The directory that holds your PX repos (for example, /home/<username>/android/PX, this must be changed)
+# SOURCE_DIR: The directory that holds your Pure repos (for example, /home/<username>/android/Pure, this must be changed)
 # LOG_DIR: The directory that will hold build logs. This is automatically the parent directory to the ROM source (this can be changed)
-# OURDIR: The directory that holds the completed PX zip directly after compilation (automatically <sourcedirectory>/out/target/product/<device>, don't change this)
-# DEST_DIR: The directory that will hold your completed PX zip files for ease of access (for example, /home/<username>/completed_zips, this must be changed)
+# OURDIR: The directory that holds the completed Pure zip directly after compilation (automatically <sourcedirectory>/out/target/product/<device>, don't change this)
+# DEST_DIR: The directory that will hold your completed Pure zip files for ease of access (for example, /home/<username>/completed_zips, this must be changed)
 # ZIP_FORMAT: The wildcard format of the zip in the out directory to move to the DEST_DIR (don't change this)
 SOURCE_DIR=???
 LOG_DIR=$( dirname ${SOURCE_DIR} )/build-logs
@@ -167,7 +166,7 @@ echoText "MAKING ZIP FILE"; newLine
 NOW=$(date +"%Y-%m-%d-%S")
 if [[ "${LOG}" == "log" ]]; then
    rm ${LOG_DIR}/*${DEVICE}*.log
-   time mka bacon 2>&1 | tee ${LOG_DIR}/px_${DEVICE}-${NOW}.log
+   time mka bacon 2>&1 | tee ${LOG_DIR}/pure_${DEVICE}-${NOW}.log
 else
    time mka bacon
 fi
@@ -190,7 +189,7 @@ if [[ `ls ${OUT_DIR}/${ZIP_FORMAT} 2>/dev/null | wc -l` != "0" ]]; then
 
 
    # EDIT OPTION
-   # Removing files section: Remove the # symbols for these next section if you want the script to remove the previous versions of the ROMs in your DEST_DIR (for less clutter). If the upload directory doesn't exist, make it; otherwise, remove existing files in ZIPMOVE
+   # Removing files section: Remove the # symbols for these next section if you want the script to remove the previous versions of the ROM in your DEST_DIR (for less clutter). If the upload directory doesn't exist, make it; otherwise, remove existing files in ZIPMOVE
    #if [[ ! -d "${DEST_DIR}" ]]; then
    #   newLine; echoText "MAKING DESTINATION DIRECTORY"
    #   mkdir -p "${DEST_DIR}"
