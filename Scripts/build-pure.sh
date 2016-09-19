@@ -1,10 +1,10 @@
 #!/bin/bash
 
 
-#######################
-#  PURE BUILD SCRIPT  #
-#######################
-# Build Pure with one easy script. You will need to have the repo synced and configured already, use this page to help you with that: https://raw.githubusercontent.com/nathanchance/Android-Tools/master/Guides/Building_AOSP.txt
+#############################
+#  PURE NEXUS BUILD SCRIPT  #
+#############################
+# Build Pure Nexus with one easy script. You will need to have the repo synced and configured already, use this page to help you with that: https://raw.githubusercontent.com/nathanchance/Android-Tools/master/Guides/Building_AOSP.txt
 
 # HINT: You can add the folder this is in to your PATH variable so you can run it from anywhere like so:
 # $ nano ~/.bashrc
@@ -72,16 +72,16 @@ LOG=${4}
 ###############
 #  Variables  #
 ###############
-# SOURCE_DIR: The directory that holds your Pure repos (for example, /home/<username>/android/Pure, this must be changed)
+# SOURCE_DIR: The directory that holds your Pure Nexus repos (for example, /home/<username>/android/PureNexus, this must be changed)
 # LOG_DIR: The directory that will hold build logs. This is automatically the parent directory to the ROM source (this can be changed)
-# OURDIR: The directory that holds the completed Pure zip directly after compilation (automatically <sourcedirectory>/out/target/product/<device>, don't change this)
-# DEST_DIR: The directory that will hold your completed Pure zip files for ease of access (for example, /home/<username>/completed_zips, this must be changed)
+# OURDIR: The directory that holds the completed Pure Nexus zip directly after compilation (automatically <sourcedirectory>/out/target/product/<device>, don't change this)
+# DEST_DIR: The directory that will hold your completed Pure Nexus zip files for ease of access (for example, /home/<username>/completed_zips, this must be changed)
 # ZIP_FORMAT: The wildcard format of the zip in the out directory to move to the DEST_DIR (don't change this)
 SOURCE_DIR=???
 LOG_DIR=$( dirname ${SOURCE_DIR} )/build-logs
 OUT_DIR=${SOURCE_DIR}/out/target/product/${DEVICE}
 DEST_DIR=???
-ZIP_FORMAT=pure_${DEVICE}-7*.zip
+ZIP_FORMAT=pure_nexus_${DEVICE}-7*.zip
 
 
 # EDIT OPTION
@@ -91,8 +91,8 @@ export KBUILD_BUILD_HOST=
 
 
 # EDIT OPTION
-# PURE_BUILD_TYPE section: Add text after the equals sign if you want something other than HOMEMADE in the Pure version (under the About Phone section)
-export PURE_BUILD_TYPE=
+# ROM_BUILD_TYPE section: Add text after the equals sign if you want something other than HOMEMADE in the Pure Nexus version (under the About Phone section)
+export ROM_BUILD_TYPE=
 
 
 # Start tracking the time to see how long it takes the script to run
@@ -166,7 +166,7 @@ echoText "MAKING ZIP FILE"; newLine
 NOW=$(date +"%Y-%m-%d-%S")
 if [[ "${LOG}" == "log" ]]; then
    rm ${LOG_DIR}/*${DEVICE}*.log
-   time mka bacon 2>&1 | tee ${LOG_DIR}/pure_${DEVICE}-${NOW}.log
+   time mka bacon 2>&1 | tee ${LOG_DIR}/pure_nexus_${DEVICE}-${NOW}.log
 else
    time mka bacon
 fi
