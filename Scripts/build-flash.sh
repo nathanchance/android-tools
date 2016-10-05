@@ -16,6 +16,10 @@
 # e.g. SOURCE_DIR=${HOME}/Android/angler
 SOURCE_DIR=
 
+# ANYKERNEL_DIR: Directory that holds your AnyKernel source
+# e.g. ANYKERNEL_DIR=${HOME}/Android/AnyKernel2
+ANYKERNEL_DIR=
+
 # TOOLCHAIN_DIR: Directory that holds the toolchain repo
 # e.g. TOOLCHAIN_DIR=${HOME}/Android/aarch64-linux-android-6.x-kernel-linaro
 TOOLCHAIN_DIR=
@@ -26,12 +30,17 @@ FLASH_BRANCH=release
 # Check user input
 if [[ -z ${SOURCE_DIR} ]]; then
    echo "You did not edit the SOURCE_DIR variable! Please edit that variable at the top of the script and run it again."
-   return
+   exit
+fi
+
+if [[ -z ${ANYKERNEL_DIR} ]]; then
+   echo "You did not edit the ANYKERNEL_DIR variable! Please edit that variable at the top of the script and run it again."
+   exit
 fi
 
 if [[ -z ${TOOLCHAIN_DIR} ]]; then
    echo "You did not edit the TOOLCHAIN_DIR variable above! Please edit that variable at the top of the script and run it again."
-   return
+   exit
 fi
 
 
@@ -68,8 +77,8 @@ RESTORE="\033[0m"
 THREAD="-j$(grep -c ^processor /proc/cpuinfo)"
 KERNEL="Image.gz-dtb"
 DEFCONFIG="flash_defconfig"
+ANYKERNEL_BRANCH=angler-flash-release
 ZIMAGE_DIR="${SOURCE_DIR}/arch/arm64/boot"
-ANYKERNEL_DIR=${SOURCE_DIR}/anykernel
 DEVICE=angler
 
 
@@ -108,7 +117,11 @@ echoText "CLEANING UP AND UPDATING"; newLine
 
 # Clean AnyKernel directory
 cd ${ANYKERNEL_DIR}
+git checkout ${ANYKERNEL_BRANCH}
+git reset --hard origin/${ANYKERNEL_BRANCH}
+git clean -f -d -x > /dev/null 2>&1
 rm -rf ${KERNEL} > /dev/null 2>&1
+git pull
 
 # Clean source directory
 cd ${SOURCE_DIR}
@@ -162,9 +175,9 @@ newLine; echoText "${BUILD_RESULT_STRING}!"; newLine
 DATE_END=$(date +"%s")
 DIFF=$((${DATE_END} - ${DATE_START}))
 
-echo -e ${RED}"TIME: $((${DIFF} / 60)) MINUTES AND $((${DIFF} % 60)) SECONDS"
+echo -e ${RED}"SCRIPT DURATION: $((${DIFF} / 60)) MINUTES AND $((${DIFF} % 60)) SECONDS"
 if [[ "${BUILD_RESULT_STRING}" == "BUILD SUCCESSFUL" ]]; then
    echo -e "ZIP LOCATION: ${ANYKERNEL_DIR}/${ZIP_NAME}.zip"
-   echo -e "SIZE: $( du -h ${ZIP_MOVE}/${ZIP_NAME}.zip | awk '{print $1}' )"
+   echo -e "SIZE: $( du -h ${ANYKERNEL_DIR}/${ZIP_NAME}.zip | awk '{print $1}' )"
 fi
 echo -e ${RESTORE}
