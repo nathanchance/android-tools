@@ -117,6 +117,23 @@ That's it! You successfully compiled a ROM from scratch :) By doing this, you co
 
 
 #########################################
+###########    Jack issues    ###########
+#########################################
+
+For those of you who are having jack issues (like saying you ran out of memory), follow these steps.
+
+Type this into your terminal, substituting the # with how many GBs of RAM you have:
+$ export JACK_SERVER_VM_ARGUMENTS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx#g"
+
+Then go into the root of the source folder and type the following:
+$ ./prebuilts/sdk/tools/jack-admin kill-server
+$ ./prebuilts/sdk/tools/jack-admin start-server
+
+This will restart the jack server to reflect your new heap limit.
+
+
+
+#########################################
 #############    Support    #############
 #########################################
 
