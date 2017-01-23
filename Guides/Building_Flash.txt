@@ -256,13 +256,12 @@ it manually first so you know exactly what you are doing :) enjoy!
 
 https://raw.githubusercontent.com/nathanchance/Android-Tools/master/Scripts/build-flash.sh
 
-Below are screenshots of me doing this process in a virtual machine (Mint 18)
-with 2 cores, 4GB of RAM, and 15GB of storage on my MacBook with a 2.5 GHz Intel
+Below are screenshots of me doing this process in a virtual machine (Arch Linux)
+with 2 cores, 4GB of RAM, and 60GB of storage on my MacBook with a 2.5 GHz Intel
 Core i5 and 8GB of RAM (fairly average in the world of PC specs I think).
 It's totally possible to do this on your own.
 
-http://i.imgur.com/XJXM2hA.png
-http://i.imgur.com/dBJdZZ8.png
+http://i.imgur.com/CwDH96j.png
 
 If you have any questions, feel free to mention me on XDA (@The Flash)
 or contact me on Hangouts (natechancellor@gmail.com) or Telegram (@nathanchance)
