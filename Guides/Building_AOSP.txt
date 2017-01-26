@@ -187,7 +187,7 @@ If you have any questions, you can reach out to me via one of the following:
 - Telegram (@nathanchance)
 
 I may not respond right away but I will do my best to help you out. However,
-I do expect you to put effort into learning this process, I am not hear to hold
+I do expect you to put effort into learning this process, I am not here to hold
 your hand. Please do not message me if you are building a ROM for a device
 unofficially, I own a Nexus device, which means I never have to worry about
 working with other's device tree. I have no knowledge that will help you and
