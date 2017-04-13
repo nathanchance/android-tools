@@ -89,14 +89,14 @@ function newLine() {
 SOURCE_DIR=${KERNEL_HOME}/Flash-Kernel
 ANYKERNEL_DIR=${KERNEL_HOME}/Flash-AK2
 TOOLCHAIN_DIR=${KERNEL_HOME}/aarch64-linux-android-6.x
-FLASH_BRANCH=n7.1.1
+FLASH_BRANCH=n7.1.2-flash
 RED="\033[01;31m"
 BLINK_RED="\033[05;31m"
 RESTORE="\033[0m"
 THREAD="-j$(grep -c ^processor /proc/cpuinfo)"
 KERNEL="Image.gz-dtb"
 DEFCONFIG="flash_defconfig"
-ANYKERNEL_BRANCH=angler-flash-personal-7.1.1
+ANYKERNEL_BRANCH=angler-flash-public-7.1.2
 ZIMAGE_DIR="${SOURCE_DIR}/arch/arm64/boot"
 DEVICE=angler
 
@@ -169,7 +169,7 @@ fi
 # If the toolchain directory doesn't exist, clone it
 if [[ ! -d ${TOOLCHAIN_DIR} ]]; then
     cd ${KERNEL_HOME}
-    git clone https://bitbucket.org/DespairFactor/aarch64-linux-android-6.x
+    git clone https://bitbucket.org/uberroms/aarch64-linux-android-6.x
 fi
 
 # Move into the source folder
@@ -181,7 +181,7 @@ make clean && make mrproper
 
 
 # Set kernel version
-KERNEL_VER=$( grep -r "EXTRAVERSION = -" ${SOURCE_DIR}/Makefile | sed 's/^.*F/F/' )
+KERNEL_VER=$( grep -r "EXTRAVERSION = -" ${SOURCE_DIR}/Makefile | sed 's/^.*f/f/' )
 # Set LOCALVERSION
 export LOCALVERSION="-$( date +%Y%m%d )"
 # Set zip name based on device and kernel version
