@@ -30,9 +30,13 @@ $ sudo apt-get install git-core
 $ git clone https://github.com/akhilnarang/scripts
 $ cd scripts
 $ ls
-$ bash <script-name>
+$ bash setup/<script-name>
 
-Run the script corresponding to your Linux Distribution
+Run the script corresponding to your Linux Distribution:
+arch-manjaro-apricity-build-environment-setup.sh - Arch based distros
+ubuntu1604linuxmint18.sh - Ubuntu 16.04 or higher based distros
+ubuntu1404.sh - Ubuntu 14.04
+linuxmint17x.sh - Linux Mint 17.x
 
 Manual way:
 -- Grab Java 8:
@@ -64,17 +68,10 @@ https://source.android.com/source/developing.html
 
 Run these commands to get repo all working (only needed if you did the manual
 method of setup above):
-$ mkdir ~/bin
-$ PATH=~/bin:$PATH
-$ curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
-$ chmod a+x ~/bin/repo
-
-You can also push repo to /usr/local/bin or /usr/bin if you don't want a bin
-folder in your home folder:
-$ curl https://storage.googleapis.com/git-repo-downloads/repo
+$ curl https://storage.googleapis.com/git-repo-downloads/repo > repo
 $ chmod a+x repo
-$ sudo mkdir -p /usr/local/bin
-$ sudo mv -v repo /usr/local/bin
+$ sudo install repo /usr/local/bin
+$ rm repo
 
 Then run these commands to get git all working:
 $ git config --global user.name "Your Name"
@@ -103,7 +100,7 @@ source, follow these steps:
    For example:
       $ repo init -u http://github.com/DirtyUnicorns/android_manifest.git -b n7x
 -- After the repo has been initialized, run this command to download the source:
-   $ repo sync --force-sync -j$( grep -c ^processor /proc/cpuinfo )
+   $ repo sync --force-sync -j$( nproc --all )
 -- This process can take a while depending on your internet connection.
 
 
@@ -135,18 +132,18 @@ After this, load up the compilation commands:
 $ . build/envsetup.sh
 
 Then, tell it which device you want to make and let it roll:
-$ breakfast <device>
+$ breakfast <device> OR lunch
 $ mka bacon
 
 NOTE: Some ROMs may use their own bacon command, read their manifest as they
 will usually outline this.
-Others may not use mka, use make -j$( grep -c ^processor /proc/cpuinfo )
+Others may not use mka, use make -j$( nproc --all )
 
 
 If you get an error here, make sure that you have downloaded all of the
 proper vendor files from your ROM's repository.
 
-Once you tell it to brunch your device, the computer will start building. You
+Once you tell it mka bacon, the computer will start building. You
 will know that it is done when you see a message saying make completed and
 telling you where your flashable zip is located.
 
@@ -208,19 +205,17 @@ his contributions to the open source community through the Pure Nexus Project.
 
 @npjohnson for the Ubuntu 16.04 Java 7 instructions.
 
-#
 # Copyright (C) 2016-2017 Nathan Chancellor
 #
-# This program is free software: you can redistribute it and/or modify
+# This guide is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# This program is distributed in the hope that it will be useful,
+# This guide is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
-#
