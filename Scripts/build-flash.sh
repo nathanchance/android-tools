@@ -163,7 +163,7 @@ if [[ -d ${SOURCE_DIR} ]]; then
     git pull
 else
     cd ${KERNEL_HOME}
-    git clone -b ${FLASH_BRANCH} https://github.com/Flash-ROM/kernel_huawei_angler Flash-Kernel
+    git clone -b ${FLASH_BRANCH} https://github.com/Flash-Kernel/angler Flash-Kernel
 fi
 
 # If the toolchain directory doesn't exist, clone it
@@ -198,7 +198,6 @@ make ${THREAD}
 # If the above was successful
 if [[ $( ls ${ZIMAGE_DIR}/${KERNEL} 2>/dev/null | wc -l ) != "0" ]]; then
     BUILD_RESULT_STRING="BUILD SUCCESSFUL"
-
 
     # Make the zip file
     newLine; echoText "MAKING FLASHABLE ZIP"; newLine

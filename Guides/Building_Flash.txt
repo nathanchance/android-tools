@@ -24,7 +24,7 @@ or my guide (https://raw.githubusercontent.com/nathanchance/Android-Tools/master
 Format:
 $ mkdir ~/Android
 $ cd ~/Android
-$ git clone https://github.com/Flash-ROM/kernel_huawei_angler.git Flash
+$ git clone https://github.com/Flash-Kernel/angler.git Flash
 
 Explanation:
 -- First command makes a directory named Android in your home folder
@@ -95,7 +95,7 @@ $ git checkout <branch>
 
 Example:
 $ cd ~/Android/Flash
-$ git checkout angler-flash-personal-7.1.1
+$ git checkout angler-flash-public-7.1.2
 
 Explanation:
 -- First command will move you into the Flash source directory we cloned above.
@@ -144,7 +144,7 @@ Explanation:
 2. Clean up from a previous compilation and update the source
 
 $ cd ~/Android/Flash
-$ git reset --hard origin/n7.1.1
+$ git reset --hard origin/7.1.2-flash1
 $ git clean -f -d -x > /dev/null 2>&1
 $ make clean && make mrproper
 $ git pull
@@ -204,7 +204,7 @@ $ git pull
 
 Example:
 $ cd ~/Android/Flash-AK2
-$ git reset --hard origin/angler-flash-personal-7.1.1
+$ git reset --hard origin/angler-flash-public-7.1.2
 $ git clean -f -d -x > /dev/null 2>&1
 $ git pull
 
@@ -267,19 +267,18 @@ If you have any questions, feel free to mention me on XDA (@The Flash)
 or contact me on Hangouts (natechancellor@gmail.com) or Telegram (@nathanchance)
 
 
-#
+
 # Copyright (C) 2016-2017 Nathan Chancellor
 #
-# This program is free software: you can redistribute it and/or modify
+# This guide is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# This program is distributed in the hope that it will be useful,
+# This guide is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
-#
