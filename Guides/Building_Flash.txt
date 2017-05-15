@@ -24,7 +24,7 @@ or my guide (https://raw.githubusercontent.com/nathanchance/Android-Tools/master
 Format:
 $ mkdir ~/Android
 $ cd ~/Android
-$ git clone https://github.com/Flash-Kernel/angler.git Flash
+$ git clone https://github.com/nathanchance/angler.git Flash
 
 Explanation:
 -- First command makes a directory named Android in your home folder
@@ -40,7 +40,7 @@ Explanation:
 Format:
 $ mkdir ~/Android
 $ cd ~/Android
-$ git clone https://github.com/Flash-Kernel/AnyKernel2.git Flash-AK2
+$ git clone https://github.com/nathanchance/AnyKernel2.git Flash-AK2
 
 Explanation:
 -- First command makes a directory named Android in your home folder
@@ -144,7 +144,7 @@ Explanation:
 2. Clean up from a previous compilation and update the source
 
 $ cd ~/Android/Flash
-$ git reset --hard origin/7.1.2-flash1
+$ git reset --hard origin/7.1.2-flash
 $ git clean -f -d -x > /dev/null 2>&1
 $ make clean && make mrproper
 $ git pull

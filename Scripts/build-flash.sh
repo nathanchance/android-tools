@@ -151,7 +151,7 @@ if [[ -d ${ANYKERNEL_DIR} ]]; then
     git pull
 else
     cd ${KERNEL_HOME}
-    git clone -b ${ANYKERNEL_BRANCH} https://github.com/Flash-Kernel/AnyKernel2 Flash-AK2
+    git clone -b ${ANYKERNEL_BRANCH} https://github.com/nathanchance/AnyKernel2 Flash-AK2
 fi
 
 # Clean source directory if it exists, clone it if not
@@ -163,7 +163,7 @@ if [[ -d ${SOURCE_DIR} ]]; then
     git pull
 else
     cd ${KERNEL_HOME}
-    git clone -b ${FLASH_BRANCH} https://github.com/Flash-Kernel/angler Flash-Kernel
+    git clone -b ${FLASH_BRANCH} https://github.com/nathanchance/angler Flash-Kernel
 fi
 
 # If the toolchain directory doesn't exist, clone it
