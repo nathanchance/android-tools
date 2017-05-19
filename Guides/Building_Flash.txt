@@ -55,17 +55,12 @@ Explanation:
 
 Format:
 $ cd ~/Android
-$ git clone <toolchain_url>
+$ git clone -b personal-linaro https://github.com/nathanchance/gcc-prebuilts aarch64-linaro-linux-gnueabi
 
 Explanation:
 - In order to compile the kernel, we need to grab a toolchain (bunch of
-   compilation tools). I currently use my own toolchain, based on Uber. Here are
-   some URLs; you just need to make sure it is an aarch64 toolchain based on
-   linux-android.
-   * AOSP: https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9
-   * Uber 4.9: https://bitbucket.org/DespairFactor/aarch64-linux-android-4.9.git
-   * Uber 5.x: https://bitbucket.org/DespairFactor/aarch64-linux-android-5.x.git
-   * Uber 6.x: https://bitbucket.org/DespairFactor/aarch64-linux-android-6.x.git
+   compilation tools). I currently use my own toolchain, based on Uber. This will
+   download and checkout the toolchain like above.
 
 
 
@@ -81,10 +76,7 @@ Explanation:
    $ ls
 
 -- You should see something like this:
-   aarch64-linux-android-6.x  Flash  Flash-AK2
-
--- The toolchain directory make be different depending on what you cloned above.
-   If it looks different, delete the Android folder and do step 2 again.
+   aarch64-linaro-linux-gnueabi  Flash  Flash-AK2
 
 
 2. Select the correct AnyKernel branch
@@ -116,23 +108,19 @@ Explanation:
 
    Assuming you have done this whole process correctly, you can move
    into your toolchain directory and type:
-   $ cd ~/Android/<toolchain_folder>
+   $ cd ~/Android/aarch64-linaro-linux-gnueabi
    $ pwd
 
-   Example:
-   $ cd ~/Android/aarch64-linux-android-6.x
-   $ pwd
-
-   You should get something like this: /home/nathan/Android/aarch64-linux-android-6.x
+   You should get something like this: /home/nathan/Android/aarch64-linaro-linux-gnueabi
 
 
    2. Tell the compiler where that toolchain is
 
    Copy and paste that file location above into this command:
-   $ export CROSS_COMPILE=<toolchain_dir>/bin/aarch64-linux-android-
+   $ export CROSS_COMPILE=<toolchain_dir>/bin/aarch64-linaro-linux-gnueabi-
 
    Example:
-   $ export CROSS_COMPILE=/home/nathan/Android/aarch64-linux-android-6.x/bin/aarch64-linux-android-
+   $ export CROSS_COMPILE=/home/nathan/Android/aarch64-linaro-linux-gnueabi/bin/aarch64-linaro-linux-gnueabi-
 
 
    3. Set the architecture

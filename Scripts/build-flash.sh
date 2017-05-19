@@ -58,17 +58,19 @@ fi
 #  FUNCTIONS  #
 #             #
 ###############
-#
+
+# Colors
+RED="\033[01;31m"
+BLINK_RED="\033[05;31m"
+RESTORE="\033[0m"
+
 # Prints a formatted header; used for outlining what the script is doing to the user
 function echoText() {
-    RED="\033[01;31m"
-    RST="\033[0m"
-
     echo -e ${RED}
     echo -e "====$( for i in $( seq ${#1} ); do echo -e "=\c"; done )===="
     echo -e "==  ${1}  =="
     echo -e "====$( for i in $( seq ${#1} ); do echo -e "=\c"; done )===="
-    echo -e ${RST}
+    echo -e ${RESTORE}
 }
 
 # Creates a new line
@@ -87,16 +89,15 @@ function newLine() {
 #
 
 SOURCE_DIR=${KERNEL_HOME}/Flash-Kernel
+FLASH_BRANCH=7.1.2-flash
 ANYKERNEL_DIR=${KERNEL_HOME}/Flash-AK2
-TOOLCHAIN_DIR=${KERNEL_HOME}/aarch64-linux-android-6.x
-FLASH_BRANCH=n7.1.2-flash
-RED="\033[01;31m"
-BLINK_RED="\033[05;31m"
-RESTORE="\033[0m"
-THREAD="-j$(grep -c ^processor /proc/cpuinfo)"
+ANYKERNEL_BRANCH=angler-flash-public-7.1.2
+TOOLCHAIN_PREFIX=aarch64-linaro-linux-gnueabi
+TOOLCHAIN_DIR=${KERNEL_HOME}/${TOOLCHAIN_PREFIX}
+TOOLCHAIN_BRANCH=personal-linaro
+THREADS="-j$( nproc -all )"
 KERNEL="Image.gz-dtb"
 DEFCONFIG="flash_defconfig"
-ANYKERNEL_BRANCH=angler-flash-public-7.1.2
 ZIMAGE_DIR="${SOURCE_DIR}/arch/arm64/boot"
 DEVICE=angler
 
@@ -110,7 +111,7 @@ DEVICE=angler
 clear
 
 # Configure build
-export CROSS_COMPILE="${TOOLCHAIN_DIR}/bin/aarch64-linux-android-"
+export CROSS_COMPILE="${TOOLCHAIN_DIR}/bin/${TOOLCHAIN_PREFIX}-"
 export ARCH=arm64
 export SUBARCH=arm64
 
@@ -145,10 +146,10 @@ fi
 if [[ -d ${ANYKERNEL_DIR} ]]; then
     cd ${ANYKERNEL_DIR}
     git checkout ${ANYKERNEL_BRANCH}
+    git fetch origin
     git reset --hard origin/${ANYKERNEL_BRANCH}
     git clean -fdx > /dev/null 2>&1
     rm -rf ${KERNEL} > /dev/null 2>&1
-    git pull
 else
     cd ${KERNEL_HOME}
     git clone -b ${ANYKERNEL_BRANCH} https://github.com/nathanchance/AnyKernel2 Flash-AK2
@@ -158,18 +159,23 @@ fi
 if [[ -d ${SOURCE_DIR} ]]; then
     cd ${SOURCE_DIR}
     git checkout ${FLASH_BRANCH}
+    git fetch origin
     git reset --hard origin/${FLASH_BRANCH}
     git clean -fdx > /dev/null 2>&1
-    git pull
 else
     cd ${KERNEL_HOME}
     git clone -b ${FLASH_BRANCH} https://github.com/nathanchance/angler Flash-Kernel
 fi
 
 # If the toolchain directory doesn't exist, clone it
-if [[ ! -d ${TOOLCHAIN_DIR} ]]; then
+if [[ -d ${TOOLCHAIN_DIR} ]]; then
+    cd ${TOOLCHAIN_DIR}
+    git fetch origin
+    git reset --hard origin/${TOOLCHAIN_BRANCH}
+    git clean -fxd > /dev/null 2>&1
+else
     cd ${KERNEL_HOME}
-    git clone https://bitbucket.org/uberroms/aarch64-linux-android-6.x
+    git clone -b ${TOOLCHAIN_BRANCH} https://github.com/nathanchance/gcc-prebuilts ${TOOLCHAIN_PREFIX}
 fi
 
 # Move into the source folder
@@ -192,7 +198,7 @@ ZIP_NAME=${KERNEL_VER}${LOCALVERSION}-$( date +%H%M )
 newLine; echoText "MAKING ${ZIP_NAME}"; newLine
 
 make ${DEFCONFIG}
-make ${THREAD}
+make ${THREADS}
 
 
 # If the above was successful
@@ -202,7 +208,7 @@ if [[ $( ls ${ZIMAGE_DIR}/${KERNEL} 2>/dev/null | wc -l ) != "0" ]]; then
     # Make the zip file
     newLine; echoText "MAKING FLASHABLE ZIP"; newLine
 
-    cp ${ZIMAGE_DIR}/${KERNEL} ${ANYKERNEL_DIR}/zImage
+    cp ${ZIMAGE_DIR}/${KERNEL} ${ANYKERNEL_DIR}
     cd ${ANYKERNEL_DIR}
     zip -r9 ${ZIP_NAME}.zip * -x README.md ${ZIP_NAME}.zip
 
