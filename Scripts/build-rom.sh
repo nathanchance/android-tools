@@ -156,14 +156,29 @@ LOG=${4}
 #
 
 SOURCEDIR=
-LOGDIR=$( dirname ${SOURCEDIR} )/build-logs
-OUTDIR=${SOURCEDIR}/out/target/product/${DEVICE}
 DESTDIR=
 
-# Stop the script if the user didn't fill out the above variables
+# SOURCEDIR is empty, prompt the user to enter it.
+if [[ -z ${SOURCEDIR} ]]; then
+    echo "You did not edit the SOURCEDIR variable."
+    echo "Enter your Source Directory now:"
+    read SOURCEDIR
+fi
+
+# DESTDIR is empty, prompt the user to enter it.
+if [[ -z ${DESTDIR} ]]; then
+    echo "You did not edit the DESTDIR variable." 
+    echo "Enter your Destination Directory now:"
+    read DESTDIR
+fi
+# Stop the script if the user didn't fill out the above variables or refused to enter them when prompted.
 if [[ -z ${SOURCEDIR} || -z ${DESTDIR} ]]; then
     echo "You did not specify a necessary variable!" && exit
 fi
+
+# Since SOURCEDIR exists now, populate these variables.
+LOGDIR=$( dirname ${SOURCEDIR} )/build-logs
+OUTDIR=${SOURCEDIR}/out/target/product/${DEVICE}
 
 
 # EDIT OPTION
