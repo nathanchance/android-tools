@@ -56,12 +56,16 @@
 #         #
 ###########
 
-# $ bash build-rom.sh <device> <sync|nosync> <clean|noclean> <log|nolog>
+# $ bash build-rom.sh -d <device> -s -c -l
 
-# Parameter 1: Device you want to build (angler, hammerhead, bullhead, etc.)
-# Parameter 2: Do you want to perform a repo sync before compilation?
-# Parameter 3: Do you want to make clobber or make installclean? (go with clean if you are unsure)
-# Parameter 4: Do you want to log your compilation or not?
+# Device is a mandatory parameter
+# -d, --device          device you want to build for
+
+# Optional Parameters:
+# -s, --sync            Repo Sync Rom before building.
+# -c, --clean           clean build directory before compilation
+# -l, --log             perform logging of compilation
+
 
 
 
@@ -126,10 +130,45 @@ function make_command() {
 # See explanations above
 #
 
-DEVICE=${1}
-SYNC=${2}
-CLEAN=${3}
-LOG=${4}
+while [[ $# -gt 0 ]]
+do
+param="$1"
+
+case $param in 
+    -d|--device)
+    DEVICE="$2"
+    shift
+    ;;
+    -s|--sync)
+    SYNC="sync"
+    ;;
+    -c|--clean)
+    CLEAN="clean"
+    ;;
+    -l|--log)
+    LOG="log"
+    ;;
+    -h|--help)
+    echo "Usage: bash build-rom.sh -d <device> [OPTION]
+
+Mandatory Parameters:
+    -d, --device          device you want to build for
+
+Optional Parameters:
+    -s, --sync            Repo Sync Rom before building.
+    -c, --clean           clean build directory before compilation
+    -l, --log             perform logging of compilation"
+    exit
+    *)
+    # Catch any unsupported parameters
+    ;;
+esac
+shift
+done
+
+if [[ -z ${DEVICE} ]]; then
+    echo "You did not specify a device to build! This is mandatory parameter." && exit
+fi
 
 
 ###############
