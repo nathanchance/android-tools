@@ -55,7 +55,7 @@ Explanation:
 
 Format:
 $ cd ~/Android
-$ git clone -b personal-linaro https://github.com/nathanchance/gcc-prebuilts aarch64-linaro-linux-gnueabi
+$ git clone -b personal-linaro-7.x https://github.com/nathanchance/gcc-prebuilts aarch64-linaro-linux-gnu
 
 Explanation:
 - In order to compile the kernel, we need to grab a toolchain (bunch of
@@ -76,7 +76,7 @@ Explanation:
    $ ls
 
 -- You should see something like this:
-   aarch64-linaro-linux-gnueabi  Flash  Flash-AK2
+   aarch64-linaro-linux-gnu  Flash  Flash-AK2
 
 
 2. Select the correct AnyKernel branch
@@ -86,11 +86,11 @@ $ cd ~/Android/Flash-AK
 $ git checkout <branch>
 
 Example:
-$ cd ~/Android/Flash
+$ cd ~/Android/Flash-AK
 $ git checkout angler-flash-public-7.1.2
 
 Explanation:
--- First command will move you into the Flash source directory we cloned above.
+-- First command will move you into the AnyKernel2 source directory we cloned above.
 -- Second command will checkout the branch you want to use. You can see the list
    of branches by typing git branch -av.
 
@@ -108,19 +108,19 @@ Explanation:
 
    Assuming you have done this whole process correctly, you can move
    into your toolchain directory and type:
-   $ cd ~/Android/aarch64-linaro-linux-gnueabi
+   $ cd ~/Android/aarch64-linaro-linux-gnu
    $ pwd
 
-   You should get something like this: /home/nathan/Android/aarch64-linaro-linux-gnueabi
+   You should get something like this: /home/nathan/Android/aarch64-linaro-linux-gnu
 
 
    2. Tell the compiler where that toolchain is
 
    Copy and paste that file location above into this command:
-   $ export CROSS_COMPILE=<toolchain_dir>/bin/aarch64-linaro-linux-gnueabi-
+   $ export CROSS_COMPILE=<toolchain_dir>/bin/aarch64-linaro-linux-gnu-
 
    Example:
-   $ export CROSS_COMPILE=/home/nathan/Android/aarch64-linaro-linux-gnueabi/bin/aarch64-linaro-linux-gnueabi-
+   $ export CROSS_COMPILE=/home/nathan/Android/aarch64-linaro-linux-gnu/bin/aarch64-linaro-linux-gnu-
 
 
    3. Set the architecture
@@ -132,19 +132,14 @@ Explanation:
 2. Clean up from a previous compilation and update the source
 
 $ cd ~/Android/Flash
-$ git reset --hard origin/7.1.2-flash
 $ git clean -f -d -x > /dev/null 2>&1
-$ make clean && make mrproper
-$ git pull
+$ git fetch origin
+$ git reset --hard origin/7.1.2-flash
 
 -- The first command moves you into the Flash source directory.
--- The second command will undo any local commits you have done and align your
-   source with the most recent commit from me.
--- The third command will clean any untracked or compiled files (this is send
+-- The second command will clean any untracked or compiled files (this is send
    to /dev/null so you do not see it happen).
--- The fourth and fifth command (strung together with &&) will remove the
-   previously compiled files and defconfig.
--- The sixth command will pull any new kernel changes from me into the source.
+-- The third and fourth command will pull any new kernel changes from me into the source.
 
 
 3. Set up the defconfig
@@ -152,27 +147,15 @@ $ git pull
 A defconfig tells the compiler which features you want in the kernel.
 This is already set up by me. To set up the defconfig, type the following:
 $ cd ~/Android/Flash
-$ make flash_defconfig
+$ mkdir out
+$ make O=out flash_defconfig
 
 
-4. Name the kernel (optional)
-
-If you notice in About Phone > Kernel Version, it shows 3.10.104-FLASH-N6P (or
-something similar). You can customize this by opening the Makefile in the source
-directory and editing the EXTRAVERSION variable (this will be undone next time you compile).
-
-
-5. Make the kernel!
+4. Make the kernel!
 
 Format:
-$ make -j#
+$ make O=out -j$( nproc --all )
 
-Example:
-$ make -j4
-
-Explanation:
--- The # after the "j" is how many simultaneous threads are run. Traditionally,
-   this is the number of cores you have plus one. So a quad-core CPU would be -j5.
 
 
 
@@ -186,28 +169,28 @@ Explanation:
 
 Format:
 $ cd ~/Android/Flash-AK2
-$ git reset --hard origin/<anykernel_branch>
 $ git clean -f -d -x > /dev/null 2>&1
-$ git pull
+$ git fetch origin
+$ git reset --hard origin/<anykernel_branch>
+
 
 Example:
 $ cd ~/Android/Flash-AK2
-$ git reset --hard origin/angler-flash-public-7.1.2
 $ git clean -f -d -x > /dev/null 2>&1
-$ git pull
+$ git fetch origin
+$ git reset --hard origin/angler-flash-public-7.1.2
+
 
 -- The first command moves you into the AnyKernel source directory.
--- The second command will undo any local commits you have done and align your
-   source with the most recent commit from me.
--- The third command will clean any untracked or compiled files (this is send
+-- The second command will clean any untracked or compiled files (this is send
    to /dev/null so you do not see it happen).
--- The fourth command will pull any new repo changes from me into the source.
+-- The third and fourth command will pull any new repo changes from me into the source.
 
 
 2. Copy the zImage to the AnyKernel directory
 
 Format:
-$ cp -v ~/Android/Flash/arch/arm64/boot/Image.gz-dtb ~/Android/Flash-AK2/zImage-dtb
+$ cp -v ~/Android/Flash/out/arch/arm64/boot/Image.gz-dtb ~/Android/Flash-AK2
 
 Explanation:
 -- We need to copy the newly compiled kernel (which resides in the
@@ -215,8 +198,8 @@ Explanation:
    name to zImage-dtb.
 -- cp = copy
 -- -v = verbose (prints the copying)
--- ~/Android/Flash/arch/arm64/boot/Image.gz-dtb = file to be copied
--- ~/Android/Flash-AK2/zImage-dtb = destination and name
+-- ~/Android/Flash/out/arch/arm64/boot/Image.gz-dtb = file to be copied
+-- ~/Android/Flash-AK2 = destination
 
 2. Zip it up!
 
