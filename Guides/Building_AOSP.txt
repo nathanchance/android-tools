@@ -98,7 +98,7 @@ source, follow these steps:
 -- If one does not exist, you can make one with this formula:
    repo init -u <url_of_manifest_repo>.git -b <branch_you_want_to_build>.
    For example:
-      $ repo init -u http://github.com/DirtyUnicorns/android_manifest.git -b n7x
+      $ repo init -u https://github.com/DirtyUnicorns/android_manifest.git -b o8x
 -- After the repo has been initialized, run this command to download the source:
    $ repo sync --force-sync -j$( nproc --all )
 -- This process can take a while depending on your internet connection.
