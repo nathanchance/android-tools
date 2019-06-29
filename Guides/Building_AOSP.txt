@@ -101,9 +101,33 @@ source, follow these steps:
    $ repo sync --force-sync -j$( nproc --all )
 -- This process can take a while depending on your internet connection.
 
+########################################
+#  Step Four: Configuring your device  #
+########################################
+
+Now is the time to configure the device tree, vendor and kernel
+for your device. Clone the above three from your base ROM that you want to 
+use. For example: here we are going to consider Lineage OS 16 (Android 9.0.x) as base ROM and
+the device used will be Oneplus 6 (codename: enchilada). Sometimes you may have to work hard
+and search the internet to get the proper device repositories otherwise ask other ROM developers.
+
+Clone the device tree:
+$ git clone https://github.com/LineageOS/android_device_oneplus_enchilada.git -b lineage-16.0 device/oneplus/enchilada
+
+Clone the vendor tree (TheMuppets github repository generally has one):
+$ git clone https://github.com/TheMuppets/proprietary_vendor_oneplus.git -b lineage-16.0 vendor/oneplus
+
+Clone the kernel tree:
+$ git clone https://github.com/LineageOS/android_kernel_oneplus_sdm845.git -b lineage-16.0 kernel/oneplus/sdm845
+$ git clone https://github.com/LineageOS/android_device_oneplus_sdm845-common.git -b lineage-16.0 kernel/oneplus/sdm845-common
+
+Usually a file ending with .dependencies is present in your device/<manufacturer>/<model_codename> tells you
+which repositories to clone for the dependencies.
+
+Adter this you can move to the building part of the ROM.
 
 ##########################
-#  Step Four: Build it!  #
+#  Step Five: Build it!  #
 ##########################
 
 Here's the moment of truth... time to build the ROM! This process could take
