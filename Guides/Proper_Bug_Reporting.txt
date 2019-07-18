@@ -12,7 +12,9 @@ what I am going to explain now. This is valid for themers, ROM developers, and
 kernel developers.
 
 A logcat is useful for debugging crashes or other weird behaviors with apps or
-themes. A dmesg is a kernel log, detailing what each subsystem is doing.
+themes. A radio logcat details what's going on in the phone's actual phone
+functionality. It tells you any errors that occured while trying to call.
+A dmesg is a kernel log, detailing what each subsystem is doing.
 A ramoops is the previous dmesg, which will detail why a phone force restarted.
 
 
@@ -26,10 +28,12 @@ A ramoops is the previous dmesg, which will detail why a phone force restarted.
     b. Open the app and grant it root permissions (if you are not rooted and
        do not want to be, you will need to use ADB below).
     c. Clear the buffer but clicking the three dot menu and hitting clear.
-    d. Click on the three dot menu, choose File, then Record.
-    e. Duplicate your crash/issue.
-    f. Go back into Matlog and hit the stop button in the lower righthand corner.
-    g. Send the generated file to your developer/themer following the etiquette
+    d. Click on the three dot menu, choose Settings, then Log Buffer(s). 
+    e. Tick either radio, main or both depending on the type of bug.
+    f. Click on the three dot menu, choose File, then Record.
+    g. Duplicate your crash/issue.
+    h. Go back into Matlog and hit the stop button in the lower righthand corner.
+    i. Send the generated file to your developer/themer following the etiquette
        below.
 
 2. Getting a dmesg:
