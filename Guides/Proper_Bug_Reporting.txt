@@ -16,6 +16,8 @@ themes. A radio logcat details what's going on in the phone's actual phone
 functionality. It tells you any errors that occured while trying to call.
 A dmesg is a kernel log, detailing what each subsystem is doing.
 A ramoops is the previous dmesg, which will detail why a phone force restarted.
+A ramoops is also known as last-kmsg or pstore, and can be retrieved from a
+custom recovery as well as from a booted device.
 
 
 ###################
@@ -44,10 +46,18 @@ A ramoops is the previous dmesg, which will detail why a phone force restarted.
     d. Send the generated file (located in the head folder of your internal
        storage partition) to your developer, following the etiquette below.
 
-3. Getting a ramoops:
+3(a). Getting a ramoops via system:
     a. Open a file manager and navigate to /sys/fs/pstore and copy the file
        named console-ramoops or console-ramoops1 to your sdcard folder.
     b. Send that file to your kernel developer following the etiquette below.
+3(b). Getting a ramoops via recovery:
+    a. Ensure your device has TWRP installed from fastboot, search XDA for help
+    b. Immediately after the device reboots, force it to recovery by holding
+       volume buttons.
+    c. Click [Advanced] and then [File Manager]. Navigate to /sys/fs/pstore
+       and copy the file named console-ramoops or console-ramoops1 to /sdcard.
+       Send that file to your kernel developer or whoever caused the bug
+       following the etiquette below
 
 
 ################
