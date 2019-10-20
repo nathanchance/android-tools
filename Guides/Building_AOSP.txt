@@ -126,6 +126,12 @@ $ prebuilts/misc/linux-x86/ccache/ccache -M 50G (or however much you want).
 Run this command if you used the automatic method of setup above
 $ ccache -M 50G
 
+Since Q, the way of using ccache has changed:
+$ export USE_CCACHE=1
+$ export CCACHE_EXEC=$(which ccache)
+$ ccache -M 50G
+Replace 50 with your desired value
+
 After this, load up the compilation commands:
 $ . build/envsetup.sh
 
