@@ -181,9 +181,12 @@ This will restart the jack server to reflect your new heap limit.
 #  Support  #
 #############
 
-If you run into any issues, you can use the following chat room for assistance
+If you run into any issues while building, you can use the following chat room for assistance
 (be sure to read the rules): https://t.me/AndroidBuildersHelp
+This chat is only for build errors or to get the build to compile.
 
+After you have successfully built the ROM, for any required assistance, use this chat
+ https://t.me/AndroidBringup
 
 ####################
 #  Special thanks  #
