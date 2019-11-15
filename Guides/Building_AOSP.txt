@@ -126,6 +126,10 @@ $ prebuilts/misc/linux-x86/ccache/ccache -M 50G (or however much you want).
 Run this command if you used the automatic method of setup above
 $ ccache -M 50G
 
+Since Android 10, the way of using ccache has changed:
+$ export USE_CCACHE=1
+$ export CCACHE_EXEC=$(command -v ccache)
+
 After this, load up the compilation commands:
 $ . build/envsetup.sh
 
