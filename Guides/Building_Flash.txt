@@ -38,16 +38,12 @@ Explanation:
 2. Grab my AnyKernel2 source
 
 Format:
-$ mkdir ~/Android
 $ cd ~/Android
 $ git clone https://github.com/nathanchance/AnyKernel2.git Flash-AK2
 
 Explanation:
--- First command makes a directory named Android in your home folder
-   (mkdir = make directory). You can change the location if you want
-   but keep it consistent throughout the guide.
--- Second command moves into that directory (change directory)
--- Third command pulls the AnyKernel repo from my Github into a directory named
+-- First command moves into that directory (change directory)
+-- Second command pulls the AnyKernel repo from my Github into a directory named
    Flash-AK2 (git clone <url> <folder_to_clone_in_to> is the format of the command)
 
 
