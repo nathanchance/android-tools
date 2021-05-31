@@ -1,3 +1,18 @@
+###########################
+#                         #
+#   MAY 31, 2021 UPDATE   #
+#                         #
+###########################
+
+This guide is no longer being actively maintained or updated, as I have not
+built an Android ROM since 2017 or even used an Android device as my daily
+driver since 2019. I am leaving it up as it has been useful for many but you
+might want to check out some more updated guides, such as those below:
+
+https://source.android.com/setup/build/building
+https://wiki.archlinux.org/title/Android#Building
+https://wiki.lineageos.org/build_guides.html
+
 
 ####################################
 #                                  #
@@ -201,18 +216,3 @@ his contributions to the open source community through the Pure Nexus Project.
 @akhilnarang for his build environment scripts.
 
 @npjohnson for the Ubuntu 16.04 Java 7 instructions.
-
-# Copyright (C) 2016-2017 Nathan Chancellor
-#
-# This guide is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This guide is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>
