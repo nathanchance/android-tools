@@ -1,0 +1,96 @@
+#!/usr/bin/env bash
+# SPDX-License-Identifier: MIT
+#
+# Copyright (C) 2021 Nathan Chancellor
+#
+# The shebang is just for shellcheck auditing; this script needs to be sourced and
+# called by the function name otherwise it literally does nothing. It works in
+# bash and zsh.
+#
+# Builds GCC and binutils for exclusively building kernels
+#
+# This can be downloaded and sourced without any of the other scripts in this repo.
+#
+# $ curl -LSsO https://github.com/nathanchance/android-tools/raw/main/scripts/bldgcc
+#
+# Open the bldgcc file to make sure it matches this one.
+#
+# $ source bldgcc
+#
+# Usage:
+# $ bldgcc arm arm64
+#
+# By default, the script will contain everything to a 'gcc' folder in ${PWD}.
+# To change where that gcc folder is, either 'export GCC_TC_FOLDER=<value>' or
+# 'GCC_TC_FOLDER=<value> bldgcc'.
+#
+# By default, the GCC and binutils versions will be the latest available.
+# To change the versions, either 'export GCC_VERSION=<value> BINUTILS_VERSION=<value>'
+# or 'GCC_VERSION=<value> BINUTILS_VERSION=<value> bldgcc'.
+#
+# The possible versions can be found here:
+# https://mirrors.kernel.org/gnu/gcc/
+# https://mirrors.kernel.org/gnu/binutils/
+#
+# This script is designed to build release versions of this software, not development
+# versions. If you want to do that, it's not hard to modify this script to do that or
+# use https://github.com/USBhost/build-tools-gcc
+function bldgcc() { (
+    BLD_OPTS=(--toolchain)
+    TARGETS=()
+
+    # Get parameters
+    [[ ${#} -eq 0 ]] && {
+        echo "ERROR: This function needs targets!" >&2
+        echo "Some of the possible options (can provide more than one):" >&2
+        echo "      arm, arm64, m68k, mips, mipsel, powerpc, powerpc64, powerpc64le, riscv64, s390x, x86_64" >&2
+        exit 1
+    }
+    while ((${#})); do
+        case ${1} in
+            --binutils | --gcc | --toolchain) BLD_OPTS=("${1}") ;;
+            all) TARGETS=(arm arm64 m68k mips mipsel powerpc powerpc64 powerpc64le riscv64 s390x x86_64) ;;
+            *) TARGETS+=("${1}") ;;
+        esac
+        shift
+    done
+
+    # Create folders
+    GCC_BLD=${GCC_TC_FOLDER:=${PWD}/gcc}/build
+    mkdir -p "${GCC_TC_FOLDER}"
+    [[ ! -d ${GCC_BLD} ]] && git -C "${GCC_TC_FOLDER}" clone https://github.com/nathanchance/buildall build
+    cd "${GCC_BLD}" || {
+        echo "buildall clone failed!" >&2
+        exit 1
+    }
+
+    # Download GCC
+    [[ -z ${GCC_VERSION} ]] && GCC_VERSION=11.1.0
+    GCC_SOURCE=gcc-${GCC_VERSION}
+    [[ ! -d ${GCC_SOURCE} ]] && curl -LSs https://mirrors.kernel.org/gnu/gcc/${GCC_SOURCE}/${GCC_SOURCE}.tar.xz | tar -xJf -
+
+    # Download binutils
+    [[ -z ${BINUTILS_VERSION} ]] && BINUTILS_VERSION=2.36.1
+    BINUTILS_SOURCE=binutils-${BINUTILS_VERSION}
+    [[ ! -d ${BINUTILS_SOURCE} ]] && curl -LSs https://mirrors.kernel.org/gnu/binutils/${BINUTILS_SOURCE}.tar.xz | tar -xJf -
+
+    # Create timert
+    [[ ! -f timert ]] && make -j"$(nproc)"
+
+    # Create config
+    cat <<EOF >config
+BINUTILS_SRC=${PWD}/${BINUTILS_SOURCE}
+CHECKING=release
+ECHO=/bin/echo
+GCC_SRC=${PWD}/${GCC_SOURCE}
+MAKEOPTS=-j$(nproc)
+PREFIX=${PREFIX:-${GCC_TC_FOLDER}/${GCC_VERSION}}
+EOF
+
+    # Build the toolchains
+    for TARGET in "${TARGETS[@]}"; do
+        # Clean up previous artifacts, can cause a false failure
+        rm -rf "${TARGET}"
+        PATH=${PATH%%:\/mnt\/c\/*} ./build "${BLD_OPTS[@]}" "${TARGET}"
+    done
+); }

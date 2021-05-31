@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# SPDX-License-Identifier: MIT
+#
+# Copyright (C) 2021 Nathan Chancellor
+#
+# Function to upload to a haste-server (points to https://paste.myself5.de/ by default)
+#
+# This can be downloaded and sourced without any of the other scripts in this repo.
+#
+# $ curl -LSsO https://github.com/nathanchance/android-tools/raw/main/scripts/haste
+#
+# Open the haste file to make sure it matches this one.
+#
+# $ source haste
+#
+# Usage:
+# $ haste <file>
+# $ command |& haste
+function haste() { (
+    for BINARY in curl jq; do
+        command -v ${BINARY} &>/dev/null || {
+            echo "ERROR: ${BINARY} is not installed" >&2
+            exit 1
+        }
+    done
+    [[ -z ${HASTE_URL} ]] && HASTE_URL=https://paste.myself5.de
+    RESULT=$(curl -sf --data-binary @"${1:--}" "${HASTE_URL}"/documents) || {
+        echo "ERROR: failed to post document, ca-certificates might need to be installed" >&2
+        exit 1
+    }
+    echo "${HASTE_URL}/raw/$(jq -r .key <<<"${RESULT}")"
+); }
