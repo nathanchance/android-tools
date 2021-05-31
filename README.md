@@ -6,5 +6,4 @@ them telling you what you need to edit but you are required to have functional k
 ## Contents:
 
 - [AOSP Building Guide](guides/building_aosp.txt)
-- [Building Flash](guides/building_flash.txt)
 - [Bug Reporting](guides/proper_bug_reporting.txt)
