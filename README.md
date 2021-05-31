@@ -6,4 +6,3 @@ them telling you what you need to edit but you are required to have functional k
 - [AOSP Building Guide](Guides/Building_AOSP.txt)
 - [Building Flash](Guides/Building_Flash.txt)
 - [Bug Reporting](Guides/Proper_Bug_Reporting.txt)
-- Scripts for Building ROM and Flash
