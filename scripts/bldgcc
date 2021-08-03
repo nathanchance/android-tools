@@ -65,12 +65,12 @@ function bldgcc() { (
     }
 
     # Download GCC
-    [[ -z ${GCC_VERSION} ]] && GCC_VERSION=11.1.0
+    [[ -z ${GCC_VERSION} ]] && GCC_VERSION=11.2.0
     GCC_SOURCE=gcc-${GCC_VERSION}
     [[ ! -d ${GCC_SOURCE} ]] && curl -LSs https://mirrors.kernel.org/gnu/gcc/${GCC_SOURCE}/${GCC_SOURCE}.tar.xz | tar -xJf -
 
     # Download binutils
-    [[ -z ${BINUTILS_VERSION} ]] && BINUTILS_VERSION=2.36.1
+    [[ -z ${BINUTILS_VERSION} ]] && BINUTILS_VERSION=2.37
     BINUTILS_SOURCE=binutils-${BINUTILS_VERSION}
     [[ ! -d ${BINUTILS_SOURCE} ]] && curl -LSs https://mirrors.kernel.org/gnu/binutils/${BINUTILS_SOURCE}.tar.xz | tar -xJf -
 
